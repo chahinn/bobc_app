@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
+
+<script>
+function updatetable(){
+	var searching = document.getElementById("searchdata1").value;
+	if(searching==""){
+			document.getElementById("tabledisplay").innerHTML = "nothing searched";
+		}
+	else{
+			xmlhttp = new XMLHttpRequest();
+			 xmlhttp.onreadystatechange = function() {
+           		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                		document.getElementById("tabledisplay").innerHTML = xmlhttp.responseText;
+            	}
+       		 };
+       		xmlhttp.open("GET","gettable.php?q="+searching,true);
+        	xmlhttp.send();	
+	}
+}
+
+</script>
+	
+</head>
+
+<body>
+
+<h1>The best of Boston College</h1>
+<form method="get">
+Search: <input type="text" name="searchdata" id="searchdata1"> <br>
+<input type="button" name = "searchbutton"value="Search" onclick="updatetable()" >
+<input type="button" name = "addattraction"value="Add Attraction" >
+</form>
+<br>
+
+<div id="tabledisplay">
+
+	
+</div>
+
+<div>
+	<form>
+  		<fieldset>
+    		<legend>Enter Attraction Information:</legend>
+    		Name: <input type="text" name="name1" id="name2"><br>
+    		Category: <input type="text"><br>
+    		Rating: <select>
+  				<option value="*">*</option>
+ 				<option value="**">**</option>
+  				<option value="***">***</option>
+  				<option value="****">****</option>
+  				<option value="*****">*****</option>
+			</select>
+			<br>
+			Price: <select>
+  				<option value="$">$</option>
+  				<option value="$$">$$</option>
+  				<option value="$$$">$$$</option>
+			</select>
+  			<br>
+  
+    		Entered By: <input type="text" name="enteredby1" id="enteredby2" ><br>
+    		URL: <input type="text" name="enteredby1" id="enteredby2" ><br>
+    		Phone: <input type="text" name="phone1" id="phone2" ><br>
+    		Address: <input type="text" name="address1" id="address2" ><br>
+    		Comment:<br><textarea rows="4" cols="50"></textarea><br>
+    		<input type="submit" value="Add This Attraction"> 
+  		</fieldset>
+	</form>
+</div>
+
+
+</body>
+</html>
+<?php
+include 'dbconnbc.php';
+
+$dbc1=connect_to_db("csci2254");
+	
+$sqltable1 = "SELECT * FROM `bestofbc`";
+$result1= perform_query($dbc1, $sqltable1);
+
+
+echo "<table>
+<tr>
+<th>Attraction</th>
+<th>Insert Date</th>
+<th>Entered By</th>
+<th>Name</th>
+<th>Category</th>
+<th>Address</th>
+<th>latitude</th>
+<th>longitude</th>
+<th>phone</th>
+<th>url</th>
+<th>stars</th>
+<th>price range</th>
+<th>comment</th>
+</tr>";
+
+while($row = mysqli_fetch_assoc($result1)) {
+    echo "<tr>";
+    echo "<td>" . $row['attraction_id'] . "</td>";
+    echo "<td>" . $row['insertion_date'] . "</td>";
+    echo "<td>" . $row['entered_by'] . "</td>";
+    echo "<td>" . $row['name'] . "</td>";
+    echo "<td>" . $row['category'] . "</td>";
+    echo "<td>" . $row['address'] . "</td>";
+    echo "<td>" . $row['latitude'] . "</td>";
+    echo "<td>" . $row['longitude'] . "</td>";
+    echo "<td>" . $row['phone'] . "</td>";
+    echo "<td>" . $row['url'] . "</td>";
+    echo "<td>" . $row['stars'] . "</td>";
+    echo "<td>" . $row['price_range'] . "</td>";
+    echo "<td>" . $row['comment'] . "</td>";
+    echo "</tr>";
+}
+echo "</table>";
+
+
+?>
+
+
