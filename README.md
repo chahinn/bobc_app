@@ -6,3 +6,6 @@ Users can insert new attractions visited and they will be displayed. The website
 
 
 http://cscilab.bc.edu/~chahinn/hw13part1/bobc.php
+
+
+-Nicolas Chahin
